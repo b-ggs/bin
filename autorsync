@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+CMD=rsync
+COOLDOWN=180
+
+if [ "$1" = "" ]; then
+  echo "Repeatedly runs rsync when it exits with a non-zero code"
+  echo
+  echo "Usage: ${0} [RSYNC_OPTIONS]"
+  exit 1
+fi
+
+while [ 1 ]; do
+  echo "[autorsync] Running *${CMD} ${@}*..."
+  $CMD $@
+  return_code=$?
+  if [ "$return_code" = "0" ]; then
+    echo "[autorsync] Process exited with code ${return_code}!"
+    exit 0
+  else
+    echo "[autorsync] Process exited with code ${return_code}. Cooling down for ${COOOLDOWN} seconds..."
+    sleep "$COOLDOWN"
+  fi
+done
