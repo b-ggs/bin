@@ -6,7 +6,7 @@
 
 Just run the commands.
 
-Alternatively, run `bin/symlink` _(requires python3)_ to symlink all the binaries to `$HOME/.local/bin`.
+Alternatively, run `bin/symlink` _(requires python3)_ to symlink all the binaries to `/usr/local/bin`.
 
 ## Binaries
 
