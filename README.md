@@ -4,7 +4,7 @@
 
 ## Usage
 
-Just run the commands.
+Just run the binaries.
 
 Alternatively, run `bin/symlink` _(requires python3)_ to symlink all the binaries to `/usr/local/bin`.
 
