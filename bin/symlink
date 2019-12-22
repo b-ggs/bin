@@ -14,4 +14,5 @@ for rel_path in os.listdir(SOURCE_PATH):
         target_path = os.path.join(TARGET_PATH, rel_path)
         print(f"Symlinking {source_path} to {target_path}...")
         # Using subprocess bc os.symlink is weird, apparently
+        # I'll switch this out as soon as they implement os.symlink(src, dest, force=True)
         subprocess.run(["ln", "-sf", source_path, target_path])
