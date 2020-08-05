@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
-import os
-import subprocess
+from os import path, listdir
+from subprocess import run
+from pathlib import Path
 
-SOURCE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-TARGET_PATH = os.path.join("/usr", "local", "bin")
+SOURCE_DIR = path.dirname(path.dirname(path.realpath(__file__)))
+TARGET_DIR = path.join(str(Path.home()), ".local", "bin")
 
-for rel_path in os.listdir(SOURCE_PATH):
-    if os.path.isdir(rel_path) or rel_path.endswith(".md"):
+for rel_path in listdir(SOURCE_DIR):
+    if path.isdir(rel_path) or rel_path.endswith(".md"):
         pass
     else:
-        source_path = os.path.join(SOURCE_PATH, rel_path)
-        target_path = os.path.join(TARGET_PATH, rel_path)
+        source_path = path.join(SOURCE_DIR, rel_path)
+        target_path = path.join(TARGET_DIR, rel_path)
         print(f"Symlinking {source_path} to {target_path}...")
         # Using subprocess bc os.symlink is weird, apparently
         # I'll switch this out as soon as they implement os.symlink(src, dest, force=True)
-        subprocess.run(["ln", "-sf", source_path, target_path])
+        run(["ln", "-sf", source_path, target_path])

@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+SCRIPT_NAME="${0##*/}"
+COOLDOWN=30
+
+if [ "$1" = "" ]; then
+  echo "Usage: ${SCRIPT_NAME} COMMAND..."
+  echo "Repeatedly runs COMMAND until it exits with a zero code."
+  exit 1
+fi
+
+while [ 1 ]; do
+  echo "[${SCRIPT_NAME}] Running \"${@}\"..."
+  $@
+  return_code="$?"
+  echo "[${SCRIPT_NAME}] Process exited with code ${return_code}!"
+  if [ "$return_code" = "0" ]; then
+    exit 0
+  else
+    echo "[${SCRIPT_NAME}] Cooling down for ${COOLDOWN} seconds..."
+    sleep "${COOLDOWN}"
+  fi
+done
