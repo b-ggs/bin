@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import os
-import shutil
-import argparse
+from os import path, scandir
+from import move, rmtree
+from argparse import ArgumentParser
 
-parser = argparse.ArgumentParser(description='Moves all nested files in a specified directory into itself')
+parser = ArgumentParser(description='Moves all nested files in a specified directory into itself')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('-n', '--dry-run', action='store_true',
                    help='show which files will be moved and where')
@@ -15,7 +15,7 @@ parser.add_argument('-v', '--verbose', action='store_true',
                     help='print paths while moving')
 args = parser.parse_args()
 
-realpath = os.path.realpath(args.dir)
+realpath = path.realpath(args.dir)
 
 dirs = []
 files = []
@@ -23,10 +23,9 @@ files = []
 # bc the find binary is different between macOS and Linux for some reason
 # please don't judge me i am a python3 newbie
 
-
 def find(path):
-    if os.path.isdir(path):
-        for i in os.scandir(path):
+    if path.isdir(path):
+        for i in scandir(path):
             find(i.path)
         if not realpath == path:
             dirs.append(path)
@@ -35,20 +34,17 @@ def find(path):
 
 find(realpath)
 
-for path in files:
+for source in files:
     prefix = 'Moving' if args.force else 'Will move'
-    source = path
-    dest = os.path.join(realpath, os.path.basename(path))
+    dest = path.join(realpath, path.basename(path))
     print(f"{prefix} {source} -> {dest}")
 
     if args.force:
-        shutil.move(source, dest)
+        move(source, dest)
 
 for _dir in dirs:
     prefix = 'Deleting' if args.force else 'Will delete'
-    source = path
-    dest = os.path.join(realpath, os.path.basename(path))
     print(f"{prefix} {_dir}")
 
     if args.force:
-        shutil.rmtree(_dir)
+        rmtree(_dir)
