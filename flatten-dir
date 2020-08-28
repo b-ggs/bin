@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from os import path, scandir
-from import move, rmtree
+from shutil import move, rmtree
 from argparse import ArgumentParser
 
 parser = ArgumentParser(description='Moves all nested files in a specified directory into itself')
